@@ -1,6 +1,11 @@
 var slider = document.getElementById('slider');
-var netoplatadiv = document.getElementById('netoplatadiv');
-var brutoplatadiv = document.getElementById('brutoplatadiv');
+var np = document.getElementById('np');
+var bp = document.getElementById('bp');
+var ppen = document.getElementById('ppen');
+var pzdr = document.getElementById('pzdr');
+var pvra = document.getElementById('pvra');
+var pzab = document.getElementById('pzab');
+var procent = document.getElementById('procent');
 var penzisko = 0.18;
 var zdravstveno = 0.073;
 var vrabotuvanje = 0.012;
@@ -20,7 +25,7 @@ noUiSlider.create(slider, {
 //    }),
     range: {
         'min': 16000,
-        'max': 500000
+        'max': 200000
     }
 });
 
@@ -30,13 +35,17 @@ slider.noUiSlider.on('update', function (values, handle) {
     var z = brutoplata * zdravstveno;
     var v = brutoplata * vrabotuvanje;
     var b = brutoplata * zaboluvanje;
-    var pridonesi = p + z + v + b;
-    
+    var pridonesi = p + z + v + b;    
     var osnovicapdd = brutoplata - pridonesi - osloboduvanje;
-    var pdd = osnovicapdd * personalen;
-    
+    var pdd = osnovicapdd * personalen;    
     var n = brutoplata - pridonesi - pdd;
+    var vkupen_procent = ( (pridonesi + pdd) / brutoplata ) * 100;
     //console.log(n);
-    netoplatadiv.innerHTML = n;
-    brutoplatadiv.innerHTML = brutoplata;
+    np.innerHTML = n;
+    bp.innerHTML = brutoplata;
+    ppen.innerHTML = p;
+    pzdr.innerHTML = z;
+    pvra.innerHTML = v;
+    pzab.innerHTML = b;
+    procent.innerHTML = vkupen_procent;
 });
