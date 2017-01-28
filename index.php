@@ -56,6 +56,14 @@
                     </div>
                 </div>
             </div>
+            
+            <div class="row">
+                <div class="col-xs-12">
+                    <a href="http://plata.ui.mk/">http://plata.ui.mk/</a>
+                    <br/>
+                    <a href="https://github.com/goranmitev/netoplata">Netoplata on github.com</a>
+                </div>
+            </div>
         </div>
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

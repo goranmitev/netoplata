@@ -1,1 +1,1 @@
-# netoplata
+Netoplata is a simple salary calculator for Macedonia.
