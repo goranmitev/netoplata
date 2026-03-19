@@ -46,8 +46,8 @@
                 <div class="col-xs-12">
                     <div id="box">
                         <p><b>Нето плата:</b> <span id="np"></span></p>
-                        <p>Придонес за пензискo осигурување (18%): <span id="ppen"></span></p>
-                        <p>Придонес за здравствено осигурување (7,3%): <span id="pzdr"></span></p>
+                        <p>Придонес за пензискo осигурување (18,8%): <span id="ppen"></span></p>
+                        <p>Придонес за здравствено осигурување (7,5%): <span id="pzdr"></span></p>
                         <p>Придонес за вработување (1,2%): <span id="pvra"></span></p>
                         <p>Придонес за професионално заболување (0,5%): <span id="pzab"></span></p>
                         <p>Вкупно придонеси (<span id="procent_pridonesi"></span>%): <span id="prid"></span></p>

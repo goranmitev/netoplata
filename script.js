@@ -11,19 +11,19 @@ var procent_pridonesi = document.getElementById('procent_pridonesi');
 var vkupen_procent = document.getElementById('vkupen_procent');
 
 
-var minimalna_neto_plata = 10080;
-var minimalna_bruto_plata = 14811; // 14739 https://www.eurokonsaltplus.com.mk/wp-content/uploads/2017/01/Plata-JANUARI-2017.pdf
-var prosecna_bruto_plata = 32877; // January 2017 http://www.ujp.gov.mk/mk/javnost/soopstenija/pogledni/592
+var minimalna_neto_plata = 26046;  // od mart 2026
+var minimalna_bruto_plata = 38600; // od mart 2026
+var prosecna_bruto_plata = 68340;  // januari 2026 http://www.ujp.gov.mk/mk/javnost/soopstenija/pogledni/1187
 var najniska_osnovica = prosecna_bruto_plata * 0.5;
-var najvisoka_osnovica_vraboten = prosecna_bruto_plata * 12;
-var najvisoka_osnovica_samovraboten = prosecna_bruto_plata * 8;
+var najvisoka_osnovica_vraboten = prosecna_bruto_plata * 16;
+var najvisoka_osnovica_samovraboten = prosecna_bruto_plata * 12;
 
-var procent_penzisko = 0.18;
-var procent_zdravstveno = 0.073;
+var procent_penzisko = 0.188;
+var procent_zdravstveno = 0.075;
 var procent_vrabotuvanje = 0.012;
 var procent_zaboluvanje = 0.005;
 var procent_personalen = 0.10;
-var licno_osloboduvanje = 7456;
+var licno_osloboduvanje = 10332; // mesecno licno osloboduvanje 2026
 
 var moneyFormat = wNumb({
 	mark: ',',
@@ -36,8 +36,8 @@ noUiSlider.create(slider, {
     step: 100,
     connect: [true, false],
     range: {
-        'min': 14900,
-        'max': 100000
+        'min': 34000,
+        'max': 300000
     }
 });
 
