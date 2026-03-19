@@ -32,12 +32,12 @@ var moneyFormat = wNumb({
 });
 
 noUiSlider.create(slider, {
-    start: najniska_osnovica,
+    start: minimalna_bruto_plata,
     step: 100,
     connect: [true, false],
     range: {
-        'min': 34000,
-        'max': 300000
+        'min': minimalna_bruto_plata,
+        'max': 30000000
     }
 });
 
