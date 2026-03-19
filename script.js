@@ -13,7 +13,7 @@ var vkupen_procent = document.getElementById('vkupen_procent');
 
 var minimalna_neto_plata = 26046;  // od mart 2026
 var minimalna_bruto_plata = 38600; // od mart 2026
-var prosecna_bruto_plata = 68340;  // januari 2026 http://www.ujp.gov.mk/mk/javnost/soopstenija/pogledni/1187
+var prosecna_bruto_plata = 69141;  // januari 2026 http://www.ujp.gov.mk/mk/javnost/soopstenija/pogledni/1187
 var najniska_osnovica = prosecna_bruto_plata * 0.5;
 var najvisoka_osnovica_vraboten = prosecna_bruto_plata * 16;
 var najvisoka_osnovica_samovraboten = prosecna_bruto_plata * 12;
