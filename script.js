@@ -23,7 +23,7 @@ var procent_zdravstveno = 0.075;
 var procent_vrabotuvanje = 0.012;
 var procent_zaboluvanje = 0.005;
 var procent_personalen = 0.10;
-var licno_osloboduvanje = 10332; // mesecno licno osloboduvanje 2026
+var licno_osloboduvanje = 10932; // mesecno licno osloboduvanje 2026
 
 var moneyFormat = wNumb({
 	mark: ',',
