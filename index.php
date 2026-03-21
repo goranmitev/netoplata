@@ -20,7 +20,7 @@
         <div class="container">
             <h1>Бруто плата: <span id="bp"></span></h1>
 
-            <input type="range" id="slider" min="38600" max="30000000" step="100" value="38600">
+            <input type="range" id="slider" min="38600" max="3000000" step="1000" value="40000">
 
             <div id="box">
                 <p><b>Нето плата:</b> <span id="np"></span></p>
