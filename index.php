@@ -18,12 +18,24 @@
     </head>
     <body>
         <div class="container">
-            <h1>Бруто плата: <span id="bp"></span></h1>
+            <h1><span id="main-label">Бруто плата</span>: <span id="bp"></span></h1>
 
-            <input type="range" id="slider" min="40000" max="3000000" step="1000" value="40000">
+            <div id="controls">
+                <div id="mode-switcher">
+                    <button class="currency-btn active" data-mode="gross">Бруто</button>
+                    <button class="currency-btn" data-mode="net">Нето</button>
+                </div>
+                <div id="currency-switcher">
+                    <button class="currency-btn active" data-currency="MKD">MKD</button>
+                    <button class="currency-btn" data-currency="EUR">EUR</button>
+                    <button class="currency-btn" data-currency="USD">USD</button>
+                </div>
+            </div>
+
+            <input type="range" id="slider" min="0" max="1000" step="1" value="0">
 
             <div id="box">
-                <p><b>Нето плата:</b> <span id="np"></span></p>
+                <p><b><span id="output-label">Нето плата</span>:</b> <span id="np"></span></p>
                 <p>Придонес за пензискo осигурување (18,8%): <span id="ppen"></span></p>
                 <p>Придонес за здравствено осигурување (7,5%): <span id="pzdr"></span></p>
                 <p>Придонес за вработување (1,2%): <span id="pvra"></span></p>
@@ -34,12 +46,10 @@
             </div>
 
             <div id="links">
-                <a href="http://plata.ui.mk/">http://plata.ui.mk/</a>
-                <br>
                 <a href="https://github.com/goranmitev/netoplata">Netoplata on github.com</a>
             </div>
         </div>
 
-        <script src="script.js"></script>
+        <script src="script.js?v=6"></script>
     </body>
 </html>
