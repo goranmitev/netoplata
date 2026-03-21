@@ -25,26 +25,18 @@ var procent_zaboluvanje = 0.005;
 var procent_personalen = 0.10;
 var licno_osloboduvanje = 10932; // mesecno licno osloboduvanje 2026
 
-var moneyFormat = wNumb({
-	mark: ',',
-	thousand: '.',
-	postfix: ' ден'
-});
+function formatMoney(value) {
+    return Math.round(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' ден';
+}
 
-noUiSlider.create(slider, {
-    start: minimalna_bruto_plata,
-    step: 100,
-    connect: [true, false],
-    range: {
-        'min': minimalna_bruto_plata,
-        'max': 30000000
-    }
-});
+slider.addEventListener('input', function () {
 
-slider.noUiSlider.on('update', function (values, handle) {
-
-    var brutoplata = parseInt(values[handle]);
+    var brutoplata = parseInt(this.value);
     var netoplata = 0;
+
+    // Update filled-track visual
+    var pct = ((brutoplata - slider.min) / (slider.max - slider.min)) * 100;
+    slider.style.setProperty('--pct', pct + '%');
 
     // Ako bruto platata e pogolema od minimalnata osnovica
     if ((brutoplata >= najniska_osnovica) && (brutoplata <= najvisoka_osnovica_vraboten)) {
@@ -82,7 +74,7 @@ slider.noUiSlider.on('update', function (values, handle) {
         netoplata = brutoplata - vkupno_pridonesi - pdd;
     }
 
-    // Ako bruto platata e pogolema od minimalnata osnovica
+    // Ako bruto platata e pogolema od maximalnata osnovica
     if (brutoplata > najvisoka_osnovica_vraboten) {
         var vkupno_penzisko = Math.round(najvisoka_osnovica_vraboten * procent_penzisko);
         var vkupno_zdravstveno = Math.round(najvisoka_osnovica_vraboten * procent_zdravstveno);
@@ -96,24 +88,20 @@ slider.noUiSlider.on('update', function (values, handle) {
         netoplata = brutoplata - vkupno_pridonesi - pdd;
     }
 
-
-
-
-
-
-
     var vkupen_procent_pridonesi = (((vkupno_pridonesi) / brutoplata) * 100).toFixed(2);
     var vkupen_procent_davacki = (((vkupno_pridonesi + pdd) / brutoplata) * 100).toFixed(2);
 
-
-    np.innerHTML = moneyFormat.to(netoplata);
-    bp.innerHTML = moneyFormat.to(brutoplata);
-    ppen.innerHTML = moneyFormat.to(vkupno_penzisko);
-    pzdr.innerHTML = moneyFormat.to(vkupno_zdravstveno);
-    pvra.innerHTML = moneyFormat.to(vkupno_vrabotuvanje);
-    pzab.innerHTML = moneyFormat.to(vkupno_zaboluvanje);
-    prid.innerHTML = moneyFormat.to(vkupno_pridonesi);
-    pers.innerHTML = moneyFormat.to(pdd);
+    np.innerHTML = formatMoney(netoplata);
+    bp.innerHTML = formatMoney(brutoplata);
+    ppen.innerHTML = formatMoney(vkupno_penzisko);
+    pzdr.innerHTML = formatMoney(vkupno_zdravstveno);
+    pvra.innerHTML = formatMoney(vkupno_vrabotuvanje);
+    pzab.innerHTML = formatMoney(vkupno_zaboluvanje);
+    prid.innerHTML = formatMoney(vkupno_pridonesi);
+    pers.innerHTML = formatMoney(pdd);
     procent_pridonesi.innerHTML = vkupen_procent_pridonesi;
     vkupen_procent.innerHTML = vkupen_procent_davacki;
 });
+
+// Populate initial values on page load
+slider.dispatchEvent(new Event('input'));
