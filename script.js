@@ -41,7 +41,9 @@ function formatMoney(value) {
     if (currency === 'MKD') {
         return Math.round(converted).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' ' + symbol;
     }
-    return converted.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' ' + symbol;
+    // Round EUR/USD values to the nearest 1000
+    var rounded = Math.round(converted / 1000) * 1000;
+    return rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' ' + symbol;
 }
 
 function sliderToSalary(pos) {
