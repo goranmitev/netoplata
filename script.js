@@ -31,8 +31,8 @@ var exchangeRates = { MKD: 1, EUR: 61.5, USD: 57.0 };
 var currencySymbols = { MKD: 'ден', EUR: '€', USD: '$' };
 
 var mode = 'gross'; // 'gross' or 'net'
-var GROSS_MIN = 40000, GROSS_MAX = 100000000;
-var NET_MIN = 26000, NET_MAX = 80000000;
+var GROSS_MIN = 40000, GROSS_MAX = 1000000000;
+var NET_MIN = 26000, NET_MAX = 800000000;
 
 function formatMoney(value) {
     var rate = exchangeRates[currency];
@@ -48,7 +48,7 @@ function formatMoney(value) {
 
 function sliderToSalary(pos) {
     var min = mode === 'gross' ? GROSS_MIN : NET_MIN;
-    var mid = mode === 'gross' ? 10000000 : 8000000;
+    var mid = mode === 'gross' ? 100000000 : 80000000;
     var max = mode === 'gross' ? GROSS_MAX : NET_MAX;
     if (pos <= 600) {
         var t = pos / 600;
