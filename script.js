@@ -37,7 +37,7 @@ noUiSlider.create(slider, {
     connect: [true, false],
     range: {
         'min': minimalna_bruto_plata,
-        'max': 30000000
+        'max': 100000000
     }
 });
 
