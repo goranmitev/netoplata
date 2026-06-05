@@ -75,11 +75,11 @@ function salaryToSliderPos(target) {
     if (target <= mid) {
         var ratio = (target - min) / (mid - min);
         var t = Math.sqrt(ratio);
-        return Math.round(t * 600);
+        return Math.max(0, Math.min(600, Math.round(t * 600)));
     } else {
         var ratio = (target - mid) / (max - mid);
         var t = Math.sqrt(ratio);
-        return 600 + Math.round(t * 400);
+        return Math.max(600, Math.min(1000, 600 + Math.round(t * 400)));
     }
 }
 
