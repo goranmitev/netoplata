@@ -11,6 +11,7 @@ var procent_pridonesi = document.getElementById('procent_pridonesi');
 var vkupen_procent = document.getElementById('vkupen_procent');
 var mainLabel = document.getElementById('main-label');
 var outputLabel = document.getElementById('output-label');
+var directInput = document.getElementById('direct-input');
 
 var minimalna_neto_plata = 26046;  // od mart 2026
 var minimalna_bruto_plata = 38600; // od mart 2026
@@ -34,16 +35,23 @@ var mode = 'gross'; // 'gross' or 'net'
 var GROSS_MIN = 40000, GROSS_MAX = 1000000000;
 var NET_MIN = 26000, NET_MAX = 800000000;
 
-function formatMoney(value) {
+function getDisplayValue(mkdValue) {
     var rate = exchangeRates[currency];
-    var symbol = currencySymbols[currency];
-    var converted = value / rate;
+    var converted = mkdValue / rate;
     if (currency === 'MKD') {
-        return Math.round(converted).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' ' + symbol;
+        return Math.round(converted);
     }
     // Round EUR/USD values to the nearest 100
-    var rounded = Math.round(converted / 100) * 100;
-    return rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' ' + symbol;
+    return Math.round(converted / 100) * 100;
+}
+
+function formatMoney(value) {
+    var symbol = currencySymbols[currency];
+    var num = getDisplayValue(value);
+    if (currency === 'MKD') {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' ' + symbol;
+    }
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' ' + symbol;
 }
 
 function sliderToSalary(pos) {
@@ -56,6 +64,22 @@ function sliderToSalary(pos) {
     } else {
         var t = (pos - 600) / 400;
         return Math.round((mid + (max - mid) * t * t) / 1000) * 1000;
+    }
+}
+
+function salaryToSliderPos(target) {
+    var min = mode === 'gross' ? GROSS_MIN : NET_MIN;
+    var mid = mode === 'gross' ? 100000000 : 80000000;
+    var max = mode === 'gross' ? GROSS_MAX : NET_MAX;
+    target = Math.max(min, Math.min(target, max));
+    if (target <= mid) {
+        var ratio = (target - min) / (mid - min);
+        var t = Math.sqrt(ratio);
+        return Math.round(t * 600);
+    } else {
+        var ratio = (target - mid) / (max - mid);
+        var t = Math.sqrt(ratio);
+        return 600 + Math.round(t * 400);
     }
 }
 
@@ -108,6 +132,15 @@ function grossFromNet(targetNet) {
     return Math.round((lo + hi) / 2 / 1000) * 1000;
 }
 
+function updateDirectInput(mkdValue) {
+    if (!directInput) return;
+    var displayVal = getDisplayValue(mkdValue);
+    directInput.value = displayVal;
+    // Set dynamic min based on current mode and currency
+    var minMkd = mode === 'gross' ? GROSS_MIN : NET_MIN;
+    directInput.min = getDisplayValue(minMkd);
+}
+
 document.querySelectorAll('#currency-switcher .currency-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
         document.querySelectorAll('#currency-switcher .currency-btn').forEach(function(b) { b.classList.remove('active'); });
@@ -125,6 +158,23 @@ document.querySelectorAll('#mode-switcher .currency-btn').forEach(function(btn) 
         slider.value = 0;
         slider.dispatchEvent(new Event('input'));
     });
+});
+
+directInput.addEventListener('change', function() {
+    var typed = parseFloat(this.value);
+    if (isNaN(typed)) {
+        slider.dispatchEvent(new Event('input'));
+        return;
+    }
+    var rate = exchangeRates[currency];
+    var minMkd = mode === 'gross' ? GROSS_MIN : NET_MIN;
+    var maxMkd = mode === 'gross' ? GROSS_MAX : NET_MAX;
+    var mkdValue = typed * rate;
+    mkdValue = Math.max(minMkd, Math.min(mkdValue, maxMkd));
+    // Find closest position on the slider curve
+    var pos = salaryToSliderPos(mkdValue);
+    slider.value = pos;
+    slider.dispatchEvent(new Event('input'));
 });
 
 slider.addEventListener('input', function () {
@@ -161,6 +211,9 @@ slider.addEventListener('input', function () {
     pers.innerHTML = formatMoney(r.pdd);
     procent_pridonesi.innerHTML = vkupen_procent_pridonesi;
     vkupen_procent.innerHTML = vkupen_procent_davacki;
+
+    var mainMkd = (mode === 'gross') ? r.brutoplata : inputSalary;
+    updateDirectInput(mainMkd);
 });
 
 // Populate initial values on page load

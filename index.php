@@ -32,6 +32,11 @@
                 </div>
             </div>
 
+            <div id="direct-input-container">
+                <div class="direct-label">Внеси директно (во избрана валута и режим):</div>
+                <input type="number" id="direct-input" step="1" title="Внесете вредност поголема од минималната">
+            </div>
+
             <input type="range" id="slider" min="0" max="1000" step="1" value="0">
 
             <div id="box">
@@ -50,6 +55,6 @@
             </div>
         </div>
 
-        <script src="script.js?v=11"></script>
+        <script src="script.js?v=12"></script>
     </body>
 </html>
