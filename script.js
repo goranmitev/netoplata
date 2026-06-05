@@ -141,6 +141,42 @@ function updateDirectInput(mkdValue) {
     directInput.min = getDisplayValue(minMkd);
 }
 
+function updateAll(mainMkd) {
+    var r;
+    if (mode === 'gross') {
+        r = calculateFromGross(mainMkd);
+        mainLabel.textContent = 'Бруто плата';
+        outputLabel.textContent = 'Нето плата';
+        bp.innerHTML = formatMoney(r.brutoplata);
+        np.innerHTML = formatMoney(r.netoplata);
+    } else {
+        var bruto = grossFromNet(mainMkd);
+        r = calculateFromGross(bruto);
+        mainLabel.textContent = 'Нето плата';
+        outputLabel.textContent = 'Бруто плата';
+        bp.innerHTML = formatMoney(mainMkd);
+        np.innerHTML = formatMoney(r.brutoplata);
+    }
+
+    // Update filled-track visual
+    var pct = (parseInt(slider.value) / 1000) * 100;
+    slider.style.setProperty('--pct', pct + '%');
+
+    var vkupen_procent_pridonesi = ((r.vkupno_pridonesi / r.brutoplata) * 100).toFixed(2);
+    var vkupen_procent_davacki = (((r.vkupno_pridonesi + r.pdd) / r.brutoplata) * 100).toFixed(2);
+
+    ppen.innerHTML = formatMoney(r.vkupno_penzisko);
+    pzdr.innerHTML = formatMoney(r.vkupno_zdravstveno);
+    pvra.innerHTML = formatMoney(r.vkupno_vrabotuvanje);
+    pzab.innerHTML = formatMoney(r.vkupno_zaboluvanje);
+    prid.innerHTML = formatMoney(r.vkupno_pridonesi);
+    pers.innerHTML = formatMoney(r.pdd);
+    procent_pridonesi.innerHTML = vkupen_procent_pridonesi;
+    vkupen_procent.innerHTML = vkupen_procent_davacki;
+
+    updateDirectInput(mainMkd);
+}
+
 document.querySelectorAll('#currency-switcher .currency-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
         document.querySelectorAll('#currency-switcher .currency-btn').forEach(function(b) { b.classList.remove('active'); });
@@ -171,49 +207,16 @@ directInput.addEventListener('change', function() {
     var maxMkd = mode === 'gross' ? GROSS_MAX : NET_MAX;
     var mkdValue = typed * rate;
     mkdValue = Math.max(minMkd, Math.min(mkdValue, maxMkd));
-    // Find closest position on the slider curve
+    // Find closest position on the slider curve for visual feedback
     var pos = salaryToSliderPos(mkdValue);
     slider.value = pos;
-    slider.dispatchEvent(new Event('input'));
+    // Use the exact mkdValue (important for exact MKD input; EUR/USD will round in display via getDisplayValue)
+    updateAll(mkdValue);
 });
 
 slider.addEventListener('input', function () {
     var inputSalary = sliderToSalary(parseInt(this.value));
-    var r;
-
-    if (mode === 'gross') {
-        r = calculateFromGross(inputSalary);
-        mainLabel.textContent = 'Бруто плата';
-        outputLabel.textContent = 'Нето плата';
-        bp.innerHTML = formatMoney(r.brutoplata);
-        np.innerHTML = formatMoney(r.netoplata);
-    } else {
-        var bruto = grossFromNet(inputSalary);
-        r = calculateFromGross(bruto);
-        mainLabel.textContent = 'Нето плата';
-        outputLabel.textContent = 'Бруто плата';
-        bp.innerHTML = formatMoney(inputSalary);
-        np.innerHTML = formatMoney(r.brutoplata);
-    }
-
-    // Update filled-track visual
-    var pct = (parseInt(this.value) / 1000) * 100;
-    slider.style.setProperty('--pct', pct + '%');
-
-    var vkupen_procent_pridonesi = ((r.vkupno_pridonesi / r.brutoplata) * 100).toFixed(2);
-    var vkupen_procent_davacki = (((r.vkupno_pridonesi + r.pdd) / r.brutoplata) * 100).toFixed(2);
-
-    ppen.innerHTML = formatMoney(r.vkupno_penzisko);
-    pzdr.innerHTML = formatMoney(r.vkupno_zdravstveno);
-    pvra.innerHTML = formatMoney(r.vkupno_vrabotuvanje);
-    pzab.innerHTML = formatMoney(r.vkupno_zaboluvanje);
-    prid.innerHTML = formatMoney(r.vkupno_pridonesi);
-    pers.innerHTML = formatMoney(r.pdd);
-    procent_pridonesi.innerHTML = vkupen_procent_pridonesi;
-    vkupen_procent.innerHTML = vkupen_procent_davacki;
-
-    var mainMkd = (mode === 'gross') ? r.brutoplata : inputSalary;
-    updateDirectInput(mainMkd);
+    updateAll(inputSalary);
 });
 
 // Populate initial values on page load
